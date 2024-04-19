@@ -3,6 +3,7 @@ using MassTransit;
 using Polly;
 using Polly.Extensions.Http;
 using SearchService;
+using SearchService.Consumers;
 using SearchService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
