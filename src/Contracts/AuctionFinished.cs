@@ -1,10 +1,10 @@
 namespace Contracts;
 
-public class AuctionsFinished
+public class AuctionFinished
 {
     public bool ItemSold { get; set; }
 
-    public string AuctionsId { get; set; }
+    public string AuctionId { get; set; }
 
     public string Winner { get; set; }
 
