@@ -1,4 +1,4 @@
-import React from 'react';
+import AuctionCard from './AuctionCard';
 
 const getData = async () => {
   const result = await fetch('http://localhost:6001/search');
@@ -11,7 +11,12 @@ const getData = async () => {
 const Listings = async () => {
   const data = await getData();
 
-  return <div>{JSON.stringify(data, null, 2)}</div>;
+  return (
+    <div>
+      {data &&
+        data.results.map((auction: any, i: number) => <AuctionCard auction={auction} key={i} />)}
+    </div>
+  );
 };
 
 export default Listings;
