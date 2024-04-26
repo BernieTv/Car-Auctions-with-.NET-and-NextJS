@@ -1,20 +1,20 @@
 'use client';
 
-import { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
 import { useParamsStore } from '@/hooks/useParamsStore';
 
 const Search = () => {
   const setParams = useParamsStore((state) => state.setParams);
-  const [value, setValue] = useState('');
+  const setSearchValue = useParamsStore((state) => state.setSearchValue);
+  const searchValue = useParamsStore((state) => state.searchValue);
 
   const onChange = (event: any) => {
-    setValue(event.target.value);
+    setSearchValue(event.target.value);
   };
 
   const search = () => {
-    setParams({ searchTerm: value });
+    setParams({ searchTerm: searchValue });
   };
 
   return (
@@ -23,6 +23,7 @@ const Search = () => {
         onKeyDown={(e: any) => {
           if (e.key === 'Enter') search();
         }}
+        value={searchValue}
         onChange={onChange}
         type="text"
         placeholder="Search for cark by make, model or color"
