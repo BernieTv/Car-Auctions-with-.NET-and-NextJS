@@ -1,18 +1,25 @@
+'use client';
+
 import { Button } from 'flowbite-react';
 
 import { useParamsStore } from '@/hooks/useParamsStore';
 import Heading from './Heading';
+import { signIn } from 'next-auth/react';
 
 type Props = {
   title?: string;
   subtitle?: string;
   showReset?: boolean;
+  showLogin?: boolean;
+  callbackUrl?: string;
 };
 
 const EmptyFilter = ({
   title = 'No matched for this filter',
   subtitle = 'Try changing or resetting the filter',
   showReset,
+  showLogin,
+  callbackUrl,
 }: Props) => {
   const reset = useParamsStore((state) => state.reset);
 
@@ -24,6 +31,12 @@ const EmptyFilter = ({
         {showReset && (
           <Button outline onClick={reset}>
             Remove Filters
+          </Button>
+        )}
+
+        {showLogin && (
+          <Button outline onClick={() => signIn('id-server', { callbackUrl })}>
+            Login
           </Button>
         )}
       </div>
