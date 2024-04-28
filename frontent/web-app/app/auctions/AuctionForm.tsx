@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FieldValues, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { Button } from 'flowbite-react';
 
 import Input from '../_components/Input';
@@ -28,12 +29,12 @@ const AuctionForm = () => {
       const result = await createAuction(data);
 
       if (result.error) {
-        throw new Error(result.error);
+        throw result.error;
       }
 
       router.push(`/auctions/details/${result.id}`);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error(`${error.status} ${error.message}`);
     }
   };
 
