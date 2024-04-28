@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Button } from 'flowbite-react';
 
 import Input from '../_components/Input';
 import DateInput from '../_components/DateInput';
+import { createAuction } from '../_actions/auctionActions';
 
 const AuctionForm = () => {
   const {
@@ -15,12 +17,24 @@ const AuctionForm = () => {
     formState: { isSubmitting, isValid },
   } = useForm({ mode: 'onTouched' });
 
+  const router = useRouter();
+
   useEffect(() => {
     setFocus('make');
   }, [setFocus]);
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
+  const onSubmit = async (data: FieldValues) => {
+    try {
+      const result = await createAuction(data);
+
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      router.push(`/auctions/details/${result.id}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

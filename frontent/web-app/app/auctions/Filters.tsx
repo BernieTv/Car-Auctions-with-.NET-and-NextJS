@@ -29,7 +29,7 @@ const filterButtons = [
   {
     label: 'Live Auctions',
     icon: GiFlame,
-    value: 'make',
+    value: 'live',
   },
   {
     label: 'Ending < 6 hours',

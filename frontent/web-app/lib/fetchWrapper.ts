@@ -59,7 +59,7 @@ const handleResponse = async (response: Response) => {
       message: response.statusText,
     };
 
-    return error;
+    return { error };
   }
 };
 
