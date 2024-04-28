@@ -22,6 +22,8 @@ const Listings = () => {
       searchTerm: state.searchTerm,
       orderBy: state.orderBy,
       filterBy: state.filterBy,
+      seller: state.seller,
+      winner: state.winner,
     }),
     shallow,
   );

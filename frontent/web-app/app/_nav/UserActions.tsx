@@ -2,24 +2,44 @@
 
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { User } from 'next-auth';
 import { Dropdown } from 'flowbite-react';
 import { HiCog, HiUser } from 'react-icons/hi2';
 import { AiFillCar, AiFillTrophy, AiOutlineLogout } from 'react-icons/ai';
 
+import { useParamsStore } from '@/hooks/useParamsStore';
+
 type Props = {
-  user: Partial<User>;
+  user: User;
 };
 
 const UserActions = ({ user }: Props) => {
+  const setParams = useParamsStore((state) => state.setParams);
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const setWinner = () => {
+    setParams({ winner: user.username, seller: undefined });
+
+    if (pathname != '/') router.push('/');
+  };
+
+  const setSeller = () => {
+    setParams({ seller: user.username, winner: undefined });
+
+    if (pathname != '/') router.push('/');
+  };
+
   return (
     <Dropdown label={`Welcome ${user.name}`} inline>
-      <Dropdown.Item icon={HiUser}>
-        <Link href="/">My Auctions</Link>
+      <Dropdown.Item icon={HiUser} onClick={setSeller}>
+        My Auctions
       </Dropdown.Item>
 
-      <Dropdown.Item icon={AiFillTrophy}>
-        <Link href="/">Auctions won</Link>
+      <Dropdown.Item icon={AiFillTrophy} onClick={setWinner}>
+        Auctions won
       </Dropdown.Item>
 
       <Dropdown.Item icon={AiFillCar}>
