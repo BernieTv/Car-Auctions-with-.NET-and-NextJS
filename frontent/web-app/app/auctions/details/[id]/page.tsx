@@ -3,14 +3,21 @@ import Heading from '@/app/_components/Heading';
 import CountdownTimer from '../../CountdownTimer';
 import CarImage from '../../CarImage';
 import DetailedSpecs from './DetailedSpecs';
+import { getCurrentUser } from '@/app/_actions/authActions';
+import EditButton from './EditButton';
 
 const Details = async ({ params: { id } }: { params: { id: string } }) => {
   const auction = await getDetailedViewData(id);
+  const user = await getCurrentUser();
 
   return (
     <div>
       <div className="flex justify-between">
-        <Heading title={`${auction.make} ${auction.model}`} />
+        <div className="flex items-center gap-3">
+          <Heading title={`${auction.make} ${auction.model}`} />
+
+          {user?.username === auction.seller && <EditButton id={auction.id} />}
+        </div>
 
         <div className="flex gap-3">
           <h3 className="text-2xl font-semibold">Time remaining:</h3>

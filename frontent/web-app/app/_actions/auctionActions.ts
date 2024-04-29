@@ -1,6 +1,7 @@
 'use server';
 
 import { FieldValues } from 'react-hook-form';
+import { revalidatePath } from 'next/cache';
 
 import { Auction, PagedResult } from '@/types';
 import { fetchWrapper } from '@/lib/fetchWrapper';
@@ -23,4 +24,12 @@ export const createAuction = async (data: FieldValues) => {
 
 export const getDetailedViewData = async (id: string): Promise<Auction> => {
   return await fetchWrapper.get(`auctions/${id}`);
+};
+
+export const updateAuction = async (data: FieldValues, id: string) => {
+  const result = await fetchWrapper.put(`auctions/${id}`, data);
+
+  revalidatePath(`/auctions`, 'layout');
+
+  return result;
 };
