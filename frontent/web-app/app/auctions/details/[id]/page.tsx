@@ -5,6 +5,7 @@ import CarImage from '../../CarImage';
 import DetailedSpecs from './DetailedSpecs';
 import { getCurrentUser } from '@/app/_actions/authActions';
 import EditButton from './EditButton';
+import DeleteButton from './DeleteButton';
 
 const Details = async ({ params: { id } }: { params: { id: string } }) => {
   const auction = await getDetailedViewData(id);
@@ -16,7 +17,12 @@ const Details = async ({ params: { id } }: { params: { id: string } }) => {
         <div className="flex items-center gap-3">
           <Heading title={`${auction.make} ${auction.model}`} />
 
-          {user?.username === auction.seller && <EditButton id={auction.id} />}
+          {user?.username === auction.seller ? (
+            <>
+              <EditButton id={auction.id} />
+              <DeleteButton id={auction.id} />
+            </>
+          ) : null}
         </div>
 
         <div className="flex gap-3">

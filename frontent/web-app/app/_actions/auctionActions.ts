@@ -29,7 +29,11 @@ export const getDetailedViewData = async (id: string): Promise<Auction> => {
 export const updateAuction = async (data: FieldValues, id: string) => {
   const result = await fetchWrapper.put(`auctions/${id}`, data);
 
-  revalidatePath(`/auctions`, 'layout');
+  revalidatePath('/auctions', 'layout');
 
   return result;
+};
+
+export const deleteAuction = async (id: string) => {
+  return await fetchWrapper.del(`auctions/${id}`);
 };
