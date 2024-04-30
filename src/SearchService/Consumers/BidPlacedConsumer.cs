@@ -13,7 +13,6 @@ public class BidPlacedConsumer : IConsumer<BidPlaced>
 
         var auction = await DB.Find<Item>().OneAsync(context.Message.AuctionId);
 
-
         if (context.Message.BidStatus.Contains("Accepted")
             && context.Message.Amount > auction.CurrentHighBid)
         {
