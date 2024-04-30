@@ -6,14 +6,14 @@ import qs from 'query-string';
 
 import AuctionCard from './AuctionCard';
 import AppPagination from '../_components/AppPagination';
-import { Auction, PagedResult } from '@/types';
 import { getData } from '../_actions/auctionActions';
 import Filters from './Filters';
 import { useParamsStore } from '@/hooks/useParamsStore';
 import EmptyFilter from '../_components/EmptyFilter';
+import { useAuctionStore } from '@/hooks/useAuctionStore';
 
 const Listings = () => {
-  const [data, setData] = useState<PagedResult<Auction>>();
+  const [loading, setLoading] = useState(true);
 
   const params = useParamsStore(
     (state) => ({
@@ -28,6 +28,17 @@ const Listings = () => {
     shallow,
   );
 
+  const data = useAuctionStore(
+    (state) => ({
+      auctions: state.auctions,
+      totalCount: state.totalCount,
+      pageCount: state.pageCount,
+    }),
+    shallow,
+  );
+
+  const setData = useAuctionStore((state) => state.setData);
+
   const setParams = useParamsStore((state) => state.setParams);
   const url = qs.stringifyUrl({ url: '', query: params });
 
@@ -38,10 +49,11 @@ const Listings = () => {
   useEffect(() => {
     getData(url).then((data) => {
       setData(data);
+      setLoading(false);
     });
-  }, [url]);
+  }, [url, setData]);
 
-  if (!data) return <h3>Loading...</h3>;
+  if (loading) return <h3>Loading...</h3>;
 
   return (
     <>
@@ -52,7 +64,7 @@ const Listings = () => {
       ) : (
         <>
           <div className="grid grid-cols-4 gap-6">
-            {data.results.map((auction) => (
+            {data.auctions.map((auction) => (
               <AuctionCard auction={auction} key={auction.id} />
             ))}
           </div>
