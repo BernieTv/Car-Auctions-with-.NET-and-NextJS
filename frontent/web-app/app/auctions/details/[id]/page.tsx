@@ -1,4 +1,4 @@
-import { getDetailedViewData } from '@/app/_actions/auctionActions';
+import { getBidsForAuction, getDetailedViewData } from '@/app/_actions/auctionActions';
 import Heading from '@/app/_components/Heading';
 import CountdownTimer from '../../CountdownTimer';
 import CarImage from '../../CarImage';
@@ -10,6 +10,7 @@ import DeleteButton from './DeleteButton';
 const Details = async ({ params: { id } }: { params: { id: string } }) => {
   const auction = await getDetailedViewData(id);
   const user = await getCurrentUser();
+  const bids = await getBidsForAuction(id);
 
   return (
     <div>
@@ -39,6 +40,12 @@ const Details = async ({ params: { id } }: { params: { id: string } }) => {
 
         <div className="border-2 rounded-lg p-2 bg-gray-100">
           <Heading title="Bids" />
+
+          {bids.map((bid) => (
+            <p key={bid.id}>
+              {bid.bidder} - {bid.amount}
+            </p>
+          ))}
         </div>
       </div>
 
