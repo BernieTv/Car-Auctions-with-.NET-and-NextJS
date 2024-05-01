@@ -6,6 +6,7 @@ import DetailedSpecs from './DetailedSpecs';
 import { getCurrentUser } from '@/app/_actions/authActions';
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
+import BidItem from './BidItem';
 
 const Details = async ({ params: { id } }: { params: { id: string } }) => {
   const auction = await getDetailedViewData(id);
@@ -42,9 +43,7 @@ const Details = async ({ params: { id } }: { params: { id: string } }) => {
           <Heading title="Bids" />
 
           {bids.map((bid) => (
-            <p key={bid.id}>
-              {bid.bidder} - {bid.amount}
-            </p>
+            <BidItem key={bid.id} bid={bid} />
           ))}
         </div>
       </div>
