@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 
 import { placeBidForAuction } from '@/app/_actions/auctionActions';
 import { useBidStore } from '@/hooks/useBidStore';
+import { numberWithCommas } from '@/lib/numberWithCommas';
 
 type Props = {
   auctionId: string;
@@ -12,21 +13,23 @@ type Props = {
 };
 
 const BidForm = ({ auctionId, highBid }: Props) => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const addBid = useBidStore((state) => state.addBid);
 
   const onSubmit = (data: FieldValues) => {
+    if (data.amount <= highBid) {
+      reset();
+
+      return toast.error(`Bid must be at least $${numberWithCommas(highBid + 1)}`);
+    }
+
     placeBidForAuction(auctionId, +data.amount)
       .then((bid): void => {
         if (bid.error) throw bid.error;
 
         addBid(bid);
+
         reset();
       })
 
