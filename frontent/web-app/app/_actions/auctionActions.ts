@@ -9,7 +9,7 @@ import { fetchWrapper } from '@/lib/fetchWrapper';
 export const getData = async (query: string): Promise<PagedResult<Auction>> => {
   const results = await fetchWrapper.get(`search${query}`);
 
-  revalidatePath(`/`);
+  revalidatePath('/', 'layout');
 
   return results;
 };
