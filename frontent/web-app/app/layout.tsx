@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import Navbar from './_nav/Navbar';
 import ToasterProvider from './_providers/ToasterProvider';
+import SignalRProvider from './_providers/SignalRProvider';
 
 import './globals.css';
 
@@ -17,7 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ToasterProvider />
         <Navbar />
 
-        <main className="container mx-auto px-5 pt-10">{children}</main>
+        <main className="container mx-auto px-5 pt-10">
+          <SignalRProvider>{children}</SignalRProvider>
+        </main>
       </body>
     </html>
   );
