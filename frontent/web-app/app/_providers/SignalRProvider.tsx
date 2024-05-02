@@ -7,8 +7,10 @@ import { User } from 'next-auth';
 
 import { useAuctionStore } from '@/hooks/useAuctionStore';
 import { useBidStore } from '@/hooks/useBidStore';
-import { Auction, Bid } from '@/types';
+import { Auction, AuctionFinished, Bid } from '@/types';
 import AuctionCreatedToast from '../_components/AuctionCreatedToast';
+import { getDetailedViewData } from '../_actions/auctionActions';
+import AuctionFinishedToast from '../_components/AuctionFinishedToast';
 
 type Props = {
   children: ReactNode;
@@ -46,11 +48,27 @@ const SignalRProvider = ({ children, user }: Props) => {
           });
 
           connection.on('AuctionCreated', (auction: Auction) => {
-            console.log('aaaaaaaaaaaaaaaaaaaaawwwwwwwww');
-
             if (user?.username !== auction.seller) {
               return toast(<AuctionCreatedToast auction={auction} />, { duration: 10_000 });
             }
+          });
+
+          connection.on('AuctionFinished', (finishedAuction: AuctionFinished) => {
+            const auction = getDetailedViewData(finishedAuction.auctionId);
+
+            return toast.promise(
+              auction,
+              {
+                loading: 'Loading',
+
+                success: (auction) => (
+                  <AuctionFinishedToast finishedAuction={finishedAuction} auction={auction} />
+                ),
+
+                error: () => 'Auction finished!',
+              },
+              { success: { duration: 10_000, icon: null } },
+            );
           });
         })
 

@@ -10,7 +10,7 @@ type Props = {
 const AuctionCreatedToast = ({ auction }: Props) => {
   return (
     <Link href={`/auctions/details/${auction.id}`} className="flex flex-col items-center">
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-row items-center gap-2">
         <Image
           src={auction.imageUrl}
           alt="Image"
