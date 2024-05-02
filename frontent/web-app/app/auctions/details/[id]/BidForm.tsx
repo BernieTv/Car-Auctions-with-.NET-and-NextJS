@@ -1,6 +1,7 @@
 'use client';
 
 import { FieldValues, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { placeBidForAuction } from '@/app/_actions/auctionActions';
 import { useBidStore } from '@/hooks/useBidStore';
@@ -21,10 +22,15 @@ const BidForm = ({ auctionId, highBid }: Props) => {
   const addBid = useBidStore((state) => state.addBid);
 
   const onSubmit = (data: FieldValues) => {
-    placeBidForAuction(auctionId, +data.amount).then((bid): void => {
-      addBid(bid);
-      reset();
-    });
+    placeBidForAuction(auctionId, +data.amount)
+      .then((bid): void => {
+        if (bid.error) throw bid.error;
+
+        addBid(bid);
+        reset();
+      })
+
+      .catch((error) => toast.error(error.message));
   };
 
   return (
