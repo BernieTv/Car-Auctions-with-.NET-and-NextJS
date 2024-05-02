@@ -34,11 +34,11 @@ const SignalRProvider = ({ children }: Props) => {
           console.log('Connected to notification hub');
 
           connection.on('BidPlaced', (bid: Bid) => {
-            console.log('Bid placed event received');
-
             if (bid.bidStatus.includes('Accepted')) {
               setCurrentPrice(bid.auctionId, bid.amount);
             }
+
+            addBid(bid);
           });
         })
 
@@ -48,7 +48,7 @@ const SignalRProvider = ({ children }: Props) => {
     return () => {
       connection?.stop();
     };
-  }, [connection, setCurrentPrice]);
+  }, [connection, setCurrentPrice, addBid]);
 
   return children;
 };

@@ -43,6 +43,8 @@ export const deleteAuction = async (id: string) => {
 };
 
 export const getBidsForAuction = async (id: string): Promise<Bid[]> => {
+  revalidatePath('/auctions', 'layout');
+
   return await fetchWrapper.get(`bids/${id}`);
 };
 
