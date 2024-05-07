@@ -125,7 +125,7 @@ services:
     image: bekzod47/web-app
     build:
       context: .
-      dockerfile: frontent/web-app/Dockerfile
+      dockerfile: frontend/web-app/Dockerfile
     volumes:
       - /var/lib/web/data
     ports:
