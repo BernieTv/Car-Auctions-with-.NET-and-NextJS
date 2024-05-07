@@ -121,6 +121,22 @@ services:
     depends_on:
       - rabbitmq
 
+  web-app:
+    image: bekzod47/web-app
+    build:
+      context: .
+      dockerfile: frontent/web-app/Dockerfile
+    volumes:
+      - /var/lib/web/data
+    ports:
+      - 3000:3000
+    environment:
+      - NEXTAUTH_SECRET=f98232b3f187f0a0571e744d1e0c447c8404c701f5bf606e8b9234bb7004ce935818928fcd42c5a701318af00c8f839fad84425af3472a1f5963d57baeb75017
+      - NEXTAUTH_URL=http://web-app
+      - API_URL=http://gateway-svc/
+      - ID_URL=http://identity-svc
+      - NEXT_PUBLIC_NOTIFY_URL=http://gateway-svc/notifications
+
 volumes:
   pgdata:
   mongodata:
