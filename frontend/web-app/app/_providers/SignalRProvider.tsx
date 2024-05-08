@@ -23,14 +23,19 @@ const SignalRProvider = ({ children, user }: Props) => {
   const setCurrentPrice = useAuctionStore((state) => state.setCurrentPrice);
   const addBid = useBidStore((state) => state.addBid);
 
+  const API_URL =
+    process.env.NODE_ENV === 'production'
+      ? 'https://api.carsties.com/notifications'
+      : process.env.NEXT_PUBLIC_NOTIFY_URL!;
+
   useEffect(() => {
     const newConnection = new HubConnectionBuilder()
-      .withUrl(process.env.NEXT_PUBLIC_NOTIFY_URL!)
+      .withUrl(API_URL)
       .withAutomaticReconnect()
       .build();
 
     setConnection(newConnection);
-  }, []);
+  }, [API_URL]);
 
   useEffect(() => {
     if (connection) {
